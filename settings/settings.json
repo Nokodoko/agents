@@ -1,0 +1,137 @@
+{
+"Key": {}
+"apiKeyHelper": {}
+"cleanupPeriodDays": {}
+"companyAnnouncements": {}
+"env": {}
+"attribution": {
+  "commit": "",
+  "pr": ""
+}
+"includeCoAuthoredBy": false
+"permissions": {}
+"hooks": {
+"SessionStart": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"UserPromptSubmit": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"PreToolUse": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"PermissionRequest": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"PostToolUse": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"PostToolUseFailure": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"SubagentStart": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"SubagentStop": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"Stop": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"PreCompact": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"SessionEnd": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+"Notification": [{
+  "matcher": "",
+  "hooks": [{
+    "type": "command",
+    "command": "echo 'command'"
+  }]
+}]
+}
+"disableAllHooks": {}
+"allowManagedHooksOnly": {}
+"model": {}
+"otelHeadersHelper": {}
+"statusLine": {}
+"fileSuggestion": {}
+"respectGitignore": {}
+"outputStyle": {}
+"forceLoginMethod": {}
+"forceLoginOrgUUID": {}
+"enableAllProjectMcpServers": {}
+"enabledMcpjsonServers": {}
+"disabledMcpjsonServers": {}
+"allowedMcpServers": {}
+"deniedMcpServers": {}
+"strictKnownMarketplaces": {}
+"awsAuthRefresh": {}
+"awsCredentialExport": {}
+"alwaysThinkingEnabled": {}
+"plansDirectory": {}
+"showTurnDuration": {}
+"language": {}
+"autoUpdatesChannel": {}
+"spinnerTipsEnabled": {}
+"terminalProgressBarEnabled": {}
+}
+
+// https://code.claude.com/docs/en/settings
+
+
+// COMPONENT_PATH_FIELDS:
+// FIELD: <TYPE_DESCRIPTION	EXAMPLE
+// commands: <string|array>: Additional command files/directories	"./custom/cmd.md" or ["./cmd1.md"]
+// agents: <string|array>: Additional agent files	"./custom/agents/"
+// skills: <string|array>: Additional skill directories	"./custom/skills/"
+// hooks: <string|object>: Hook config path or inline config	"./hooks.json"
+// mcpServers: <string|object>: MCP config path or inline config	"./mcp-config.json"
+// outputStyles: <string|array>: Additional output style files/directories	"./styles/"
+// lspServers: <string|object>: Language Server Protocol config for code intelligence (go to definition, find references, etc.)	"./.lsp.json"

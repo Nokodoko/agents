@@ -1,0 +1,23 @@
+---
+name: {{COMPONENT_NAME}}
+description: [Describe when Claude should use this skill]
+---
+
+# {{COMPONENT_NAME}} Skill
+
+[Describe what this skill does and how it should behave]
+
+## When to Use
+
+- [Trigger condition 1]
+- [Trigger condition 2]
+
+## Workflow
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Output Format
+
+[Describe expected output format]

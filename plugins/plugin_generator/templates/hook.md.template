@@ -1,0 +1,95 @@
+# {{COMPONENT_NAME}} Hook
+
+## Event Type
+
+{{EVENT_TYPE}}
+
+Available events: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `SubagentStart`, `SubagentStop`
+
+## Description
+
+[Describe what this hook does and when it triggers]
+
+## Implementation
+
+The hook script is located at `hooks/{{COMPONENT_NAME}}.sh`. See the script for full implementation.
+
+### Input Format
+
+Hooks receive JSON via stdin:
+
+```json
+{
+  "session_id": "abc123",
+  "transcript_path": "/path/to/transcript.jsonl",
+  "cwd": "/current/working/directory",
+  "hook_event_name": "{{EVENT_TYPE}}",
+  "prompt": "the user's prompt text"
+}
+```
+
+### Output Behavior
+
+| Output | Effect |
+|--------|--------|
+| stdout | Injected as context to Claude |
+| stderr | Displayed as error to user |
+| Exit 0 | Allow prompt to proceed |
+| Exit 2 | Block prompt |
+
+## Configuration
+
+**IMPORTANT**: Hooks are NOT registered in the plugin manifest. Add to `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "{{EVENT_TYPE}}": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{HOOK_PATH}}/hooks/{{COMPONENT_NAME}}.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Matcher Patterns
+
+- `""` (empty) - matches all prompts
+- `"keyword"` - matches prompts containing "keyword"
+- Use regex for complex patterns
+
+## Testing
+
+```bash
+# Manual test
+echo '{"prompt": "test input", "cwd": "/tmp"}' | ./hooks/{{COMPONENT_NAME}}.sh
+
+# Verify notifications (if implemented)
+notify-send "Test" "Hook notification test"
+```
+
+## Desktop Notifications (Optional)
+
+If using `notify-send` for notifications, customize styling in `~/.config/dunst/dunstrc`:
+
+```ini
+[{{COMPONENT_NAME}}-notifications]
+    summary = "{{COMPONENT_NAME}}*"
+    frame_color = "#FFA500"
+    background = "#1a1000"
+    foreground = "#ffffff"
+    timeout = 3
+```
+
+Reload: `killall dunst && dunst &`
+
+## Further Reading
+
+See `/docs/HOOKS_GUIDE.md` in plugin_generator for comprehensive hook development documentation.

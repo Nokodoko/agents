@@ -1,0 +1,61 @@
+#!/bin/bash
+# Hook script for {{COMPONENT_NAME}}
+# Event: {{EVENT_TYPE}}
+#
+# Input: JSON via stdin with fields:
+#   - session_id: Current session identifier
+#   - transcript_path: Path to session transcript
+#   - cwd: Current working directory
+#   - hook_event_name: Event that triggered this hook
+#   - prompt: User's prompt text (UserPromptSubmit only)
+#
+# Output:
+#   - stdout: Context injected to Claude
+#   - stderr: Error messages shown to user
+#   - exit 0: Allow prompt
+#   - exit 2: Block prompt
+
+set -uo pipefail
+
+# Read input from stdin
+INPUT=$(cat)
+
+# Parse JSON fields with fallback for robustness
+PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null || echo "$INPUT")
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty' 2>/dev/null || echo ".")
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty' 2>/dev/null || echo "")
+
+# Detection function - customize pattern as needed
+detect_pattern() {
+    local text="$1"
+    # Example: detect terraform commands
+    if echo "$text" | grep -qiE 'your-pattern-here'; then
+        echo "detected-value"
+        return 0
+    fi
+    return 1
+}
+
+# Main logic
+main() {
+    local detected
+    detected=$(detect_pattern "$PROMPT" || echo "")
+
+    if [ -n "$detected" ]; then
+        # Optional: Send desktop notification
+        # Requires libnotify (notify-send) to be installed
+        notify-send -u normal -t 3000 "{{COMPONENT_NAME}}" "Detected: $detected" 2>/dev/null || true
+
+        # Output context for Claude (will be injected into conversation)
+        echo "<{{COMPONENT_NAME}}-context>"
+        echo "detected: $detected"
+        echo "cwd: $CWD"
+        echo "</{{COMPONENT_NAME}}-context>"
+    fi
+
+    # Exit 0 to allow prompt to proceed
+    # Exit 2 to block the prompt
+    exit 0
+}
+
+main "$@"

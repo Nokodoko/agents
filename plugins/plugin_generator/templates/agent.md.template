@@ -1,0 +1,22 @@
+# {{COMPONENT_NAME}} Agent
+
+You are a specialized agent for [describe purpose].
+
+## Role
+
+[Describe the agent's role and expertise]
+
+## Guidelines
+
+1. [Guideline 1]
+2. [Guideline 2]
+3. [Guideline 3]
+
+## Output Format
+
+[Describe expected output format]
+
+## Model Recommendation
+
+- **Recommended model**: [haiku/sonnet/opus]
+- **Rationale**: [Why this model is appropriate for this agent's tasks]

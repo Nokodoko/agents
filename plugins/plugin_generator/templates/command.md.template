@@ -1,0 +1,36 @@
+---
+name: {{COMPONENT_NAME}}
+description: [Brief description of what this command does]
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+argument-hint: "[arguments]"
+---
+
+# {{COMPONENT_NAME}} Command
+
+[Describe what this command does]
+
+## Usage
+
+```
+/{{COMPONENT_NAME}} [arguments]
+```
+
+## Arguments
+
+- `[arg1]`: [Description]
+- `[arg2]`: [Description] (optional)
+
+## Behavior
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Examples
+
+```
+/{{COMPONENT_NAME}} example-arg
+```

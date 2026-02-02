@@ -1,0 +1,34 @@
+{
+  "agents": {
+    "code_reviewer": {
+      "name": "Code Reviewer",
+      "model": "sonnet",
+      "prompt_file": "agents/code_reviewer.md",
+      "description": "Reviews code for architecture, DRY principles, Unix philosophy, extensibility, and decoupling"
+    },
+    "code_simplifier": {
+      "name": "Code Simplifier",
+      "model": "haiku",
+      "prompt_file": "agents/code_simplifier.md",
+      "description": "Reduces complexity, removes dead code, improves readability"
+    },
+    "security_reviewer": {
+      "name": "Security Reviewer",
+      "model": "opus",
+      "prompt_file": "agents/security_reviewer.md",
+      "description": "Conducts security analysis, vulnerability detection, OWASP compliance"
+    },
+    "tech_lead": {
+      "name": "Tech Lead",
+      "model": "opus",
+      "prompt_file": "agents/tech_lead.md",
+      "description": "Provides architectural oversight, technical debt assessment, risk analysis"
+    },
+    "ux_reviewer": {
+      "name": "UX Reviewer",
+      "model": "haiku",
+      "prompt_file": "agents/ux_reviewer.md",
+      "description": "Reviews accessibility, interaction design, responsive patterns"
+    }
+  }
+}

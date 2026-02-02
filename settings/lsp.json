@@ -1,0 +1,68 @@
+// location: .lsp.json
+{
+  "go": {
+    "command": "gopls",
+    "args": ["serve"],
+    "extensionToLanguage": {
+      ".go": "go"
+    }
+    "args": { "Command-line arguments for the LSP server" },
+    "transport": { "Communication transport: stdio (default) or socket" },
+    "env": { "Environment variables to set when starting the server" },
+    "initializationOptions": { "Options passed to the server during initialization" },
+    "settings": { "Settings passed via workspace/didChangeConfiguration" },
+    "workspaceFolder": { "Workspace folder path for the server" },
+    "startupTimeout": { "Max time to wait for server startup (milliseconds)" },
+    "shutdownTimeout": { "Max time to wait for graceful shutdown (milliseconds)" },
+    "restartOnCrash": { "Whether to automatically restart the server if it crashes" },
+    "maxRestarts": { "Maximum number of restart attempts before giving up" },
+  }
+}
+// inline:
+{
+  "name": "my-plugin",
+  "lspServers": {
+    "go": {
+      "command": "gopls",
+      "args": ["serve"],
+      "extensionToLanguage": {
+        ".go": "go"
+      }
+    }
+  }
+}
+
+// OPTIONAL FIELDS:
+// "args": { "Command-line arguments for the LSP server" }
+// "transport": { "Communication transport: stdio (default) or socket" }
+// "env": { "Environment variables to set when starting the server" }
+// "initializationOptions": { "Options passed to the server during initialization" }
+// "settings": { "Settings passed via workspace/didChangeConfiguration" }
+// "workspaceFolder": { "Workspace folder path for the server" }
+// "startupTimeout": { "Max time to wait for server startup (milliseconds)" }
+// "shutdownTimeout": { "Max time to wait for graceful shutdown (milliseconds)" }
+// "restartOnCrash": { "Whether to automatically restart the server if it crashes" }
+// "maxRestarts": { "Maximum number of restart attempts before giving up" }
+
+// COMPLETION_SCHEMA:
+{
+  "name": "plugin-name",
+  "version": "1.2.0",
+  "description": "Brief plugin description",
+  "author": {
+    "name": "Author Name",
+    "email": "author@example.com",
+    "url": "https://github.com/author"
+  },
+  "homepage": "https://docs.example.com/plugin",
+  "repository": "https://github.com/author/plugin",
+  "license": "MIT",
+  "keywords": ["keyword1", "keyword2"],
+  "commands": ["./custom/commands/special.md"],
+  "agents": "./custom/agents/",
+  "skills": "./custom/skills/",
+  "hooks": "./config/hooks.json",
+  "mcpServers": "./mcp-config.json",
+  "outputStyles": "./styles/",
+  "lspServers": "./.lsp.json"
+}

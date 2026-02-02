@@ -1,0 +1,7 @@
+{
+  "name": "code-review-agents",
+  "description": "Specialized sub-agents for code review: Code Reviewer, Code Simplifier, Security Reviewer, Tech Lead, and UX Reviewer",
+  "author": {
+    "name": "n0ko"
+  }
+}

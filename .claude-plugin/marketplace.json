@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agents",
+  "description": "Custom code review agents",
+  "owner": {
+    "name": "n0ko"
+  },
+  "plugins": [
+    {
+      "name": "code-review-agents",
+      "description": "Specialized sub-agents for code review: Code Reviewer, Code Simplifier, Security Reviewer, Tech Lead, and UX Reviewer",
+      "version": "1.0.0",
+      "author": {
+        "name": "n0ko"
+      },
+      "source": "./plugins/code-review-agents",
+      "category": "development"
+    },
+    {
+      "name": "plugin-generator",
+      "description": "Scaffolds new Claude Code plugins with interactive component selection",
+      "version": "1.0.0",
+      "author": {
+        "name": "n0ko"
+      },
+      "source": "./plugins/plugin_generator",
+      "category": "development"
+    }
+  ]
+}

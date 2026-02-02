@@ -1,0 +1,19 @@
+{
+  "defaults": {
+    "author": {
+      "name": "",
+      "email": ""
+    },
+    "global_plugin_path": "~/.claude/plugins/",
+    "marketplace_search_paths": [
+      ".claude-plugin/marketplace.json",
+      "~/.claude/marketplace.json"
+    ]
+  },
+  "component_descriptions": {
+    "commands": "User-invocable /commands for explicit actions",
+    "agents": "Specialized sub-agents with prompts and model assignments",
+    "skills": "Reusable capabilities Claude invokes contextually",
+    "hooks": "Lifecycle event handlers (SessionStart, PreToolUse, etc.)"
+  }
+}

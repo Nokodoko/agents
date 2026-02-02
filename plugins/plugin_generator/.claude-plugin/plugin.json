@@ -1,0 +1,7 @@
+{
+  "name": "plugin-generator",
+  "description": "Scaffolds new Claude Code plugins with interactive component selection",
+  "author": {
+    "name": "n0ko"
+  }
+}

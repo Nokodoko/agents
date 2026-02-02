@@ -1,0 +1,8 @@
+{
+  "name": "rca-platform-engineering",
+  "description": "A plugin for RCA Platform Engineering",
+  "version": "1.0.0",
+  "author": {
+    "name": "Chris Montgomery"
+  }
+}
