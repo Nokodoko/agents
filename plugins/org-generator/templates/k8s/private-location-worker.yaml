@@ -1,0 +1,152 @@
+---
+# Datadog Private Location Worker Deployment
+# This deploys the Synthetics Private Location worker to your Kubernetes cluster
+#
+# Prerequisites:
+# 1. Create the config secret first:
+#    kubectl create secret generic datadog-private-location-config \
+#      --from-file=config.json=/path/to/worker-config-*.json
+#
+# 2. Apply this manifest:
+#    kubectl apply -f private-location-worker.yaml
+#
+# Template variables to replace:
+# - {{NAMESPACE}}: Kubernetes namespace (e.g., datadog)
+# - {{PRIVATE_LOCATION_NAME}}: Name of the private location
+# - {{REPLICAS}}: Number of worker replicas (recommend 2+)
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{NAMESPACE}}
+  labels:
+    name: {{NAMESPACE}}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: datadog-private-location-config
+  namespace: {{NAMESPACE}}
+type: Opaque
+# Data populated from: kubectl create secret generic ... --from-file=config.json=...
+# Or add base64 encoded config:
+# data:
+#   config.json: <base64-encoded-config>
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datadog-private-location-worker
+  namespace: {{NAMESPACE}}
+  labels:
+    app: datadog-private-location-worker
+    private-location: {{PRIVATE_LOCATION_NAME}}
+spec:
+  replicas: {{REPLICAS}}
+  selector:
+    matchLabels:
+      app: datadog-private-location-worker
+  template:
+    metadata:
+      labels:
+        app: datadog-private-location-worker
+        private-location: {{PRIVATE_LOCATION_NAME}}
+    spec:
+      containers:
+        - name: worker
+          image: datadog/synthetics-private-location-worker:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/datadog
+              readOnly: true
+          env:
+            - name: DATADOG_SYNTHETICS_CONFIG_FILE
+              value: /etc/datadog/config.json
+            # Optional: Enable debug logging
+            # - name: LOG_LEVEL
+            #   value: "debug"
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: config
+          secret:
+            secretName: datadog-private-location-config
+      # Optional: Node selector for dedicated nodes
+      # nodeSelector:
+      #   workload: synthetics
+      # Optional: Tolerations
+      # tolerations:
+      #   - key: "dedicated"
+      #     operator: "Equal"
+      #     value: "synthetics"
+      #     effect: "NoSchedule"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datadog-private-location-worker
+  namespace: {{NAMESPACE}}
+spec:
+  selector:
+    app: datadog-private-location-worker
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+---
+# Optional: HorizontalPodAutoscaler for automatic scaling
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: datadog-private-location-worker-hpa
+#   namespace: {{NAMESPACE}}
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: datadog-private-location-worker
+#   minReplicas: 2
+#   maxReplicas: 10
+#   metrics:
+#     - type: Resource
+#       resource:
+#         name: cpu
+#         target:
+#           type: Utilization
+#           averageUtilization: 70
+
+---
+# Optional: PodDisruptionBudget for high availability
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: datadog-private-location-worker-pdb
+  namespace: {{NAMESPACE}}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: datadog-private-location-worker

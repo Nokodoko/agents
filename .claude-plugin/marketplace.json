@@ -25,6 +25,16 @@
       },
       "source": "./plugins/plugin_generator",
       "category": "development"
+    },
+    {
+      "name": "org-generator",
+      "description": "Generates Datadog Terraform infrastructure for new client engagements. Creates S3 backends, monitors, dashboards, roles, API keys, and agent configurations based on client questionnaire responses.",
+      "version": "1.0.0",
+      "author": {
+        "name": "n0ko"
+      },
+      "source": "./plugins/org-generator",
+      "category": "infrastructure"
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "name": "org-generator",
+  "description": "Generates Datadog Terraform infrastructure for new client engagements. Creates S3 backends, monitors, dashboards, roles, and API keys based on client questionnaire responses. Supports AWS, GCP, and Azure.",
+  "version": "1.0.0",
+  "author": {
+    "name": "n0ko"
+  }
+}
