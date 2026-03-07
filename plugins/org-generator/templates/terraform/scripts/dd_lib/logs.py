@@ -10,7 +10,8 @@ import headers
 import keys
 import requests
 import json
-from typing import Dict, Any, Optional
+import os
+from typing import Dict, Any, Optional, List
 
 # Datadog API base URL
 BASE_URL: str = "https://{{SITE}}"
@@ -147,6 +148,93 @@ def log_aggregate(
     except Exception as e:
         print(f"Unexpected Error: {e}")
         return None
+
+
+def post_log(
+    file_path: str,
+    ddsource: str = "python",
+    service: str = "dd_lib",
+    hostname: Optional[str] = None,
+    ddtags: Optional[str] = None,
+    level: str = "info",
+    chunk_size: int = 5_000_000,
+) -> Optional[List[Dict[str, Any]]]:
+    """
+    Read a static file and post its contents as log entries to Datadog.
+
+    Uses the HTTP Log Intake API (v2). Files larger than chunk_size bytes
+    are split into multiple requests (Datadog limit is 5MB per payload).
+
+    Args:
+        file_path:   Absolute path to the file to send.
+        ddsource:    Source tag for the log (e.g. "python", "nginx").
+        service:     Service name attached to the log.
+        hostname:    Hostname to associate. Defaults to local hostname.
+        ddtags:      Comma-separated tags (e.g. "env:prod,team:ops").
+        level:       Log level / status (info, warning, error, etc.).
+        chunk_size:  Max bytes per HTTP request (default 5 MB).
+
+    Returns:
+        List of API response dicts, or None on error.
+    """
+    URL: str = "https://http-intake.logs.{{SITE}}/api/v2/logs"
+    HEADERS: Dict[str, str] = {
+        "Content-Type": "application/json",
+        "DD-API-KEY": keys.api(),
+    }
+
+    if hostname is None:
+        hostname = os.uname().nodename
+
+    if not os.path.isfile(file_path):
+        print(f"Error: file not found: {file_path}")
+        return None
+
+    try:
+        with open(file_path, "r") as f:
+            content = f.read()
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        return None
+
+    if not content.strip():
+        print("Error: file is empty")
+        return None
+
+    # Split content into chunks that fit within the payload limit
+    chunks: List[str] = []
+    while content:
+        chunks.append(content[:chunk_size])
+        content = content[chunk_size:]
+
+    responses: List[Dict[str, Any]] = []
+    for i, chunk in enumerate(chunks):
+        payload: List[Dict[str, str]] = [
+            {
+                "ddsource": ddsource,
+                "ddtags": ddtags or "",
+                "hostname": hostname,
+                "message": chunk,
+                "service": service,
+                "status": level,
+            }
+        ]
+
+        try:
+            response = requests.post(url=URL, headers=HEADERS, json=payload)
+            if response.status_code not in [200, 202]:
+                print(f"Error: {response.status_code}")
+                print(response.text)
+                return None
+            result = response.json() if response.text.strip() else {}
+            responses.append(result)
+            part = f" (chunk {i + 1}/{len(chunks)})" if len(chunks) > 1 else ""
+            print(f"Log posted successfully{part}")
+        except Exception as e:
+            print(f"Request failed: {e}")
+            return None
+
+    return responses
 
 
 if __name__ == "__main__":
